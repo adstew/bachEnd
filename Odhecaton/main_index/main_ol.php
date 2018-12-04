@@ -8,7 +8,8 @@
     <body>
     <div id="main">
         <div id="header">
-            <h1>Odhecaton Database</h1>
+            <h1 style="float:left; text-indent:450px;">Odhecaton Database</h1>
+            <h3 style="float:right; font-weight:normal; margin:6px;">Click the name to display the score!</h3>
         </div>
         <div id="middle">
             <div id="menu">
@@ -28,22 +29,23 @@
                 </form>
                 </br><h2 style="font-size:18px;">UPDATE COMPOSER</h2>
                 <form action="update_music.php" method="POST" style="padding-left:4px;">
-                    <input type="text" name="c_nameU" placeholder="Full Name">
+                    <input type="text" name="c_nameU" placeholder="Current Name">
+                    <input type="text" name="c_newU" placeholder="New Name">
                     </br><button type="submit" name="up_button">UPDATE</button>
                 </form>
             </div>
             <div id="sheets">
-                <embed src="../music_files/chopin_9_1" width="100%" height="816px" alt="pdf" />
+                <embed name="sheet_display" src="../music_files/seikilos" width="100%" height="816px" alt="pdf" />
             </div>
             <div id="query">
                 <div id="search">
                     <form action="search_music.php" method="POST">
-                        <input type="text" placeholder="Search by...">
+                        <input type="text" id="search_bar" onkeyup="filter_scores()" placeholder="Search by..." onfocus="this.value=''">
                     </form>
                     <ul class="nav">
-                        <li><a onclick="set_search('period')" id="period">Period</a></li>
-                        <li><a onclick="set_search('composer')" id="composer">Composer</a></li>
-                        <li><a onclick="set_search('title')" id="title">Title</a></li>
+                        <!-- <li><a onclick="set_search('period')" id="period">Period</a></li> -->
+                        <!-- <li><a onclick="set_search('composer')" id="composer">Composer</a></li> -->
+                        <!-- <li><a onclick="set_search('title')" id="title">Title</a></li> -->
                     </ul>
                 </div>
                 <div id="results"><?php include 'search_music.php';?></div>
@@ -61,17 +63,55 @@
         </div>
     </div>
     <script type="text/javascript">
-        var i = false;
-        function set_search(search_name) {
-            if (i) {
+        var j = false;
+        function set_search(search_name) 
+        {
+            if (j) 
+            {
                 document.getElementById('period').style.backgroundColor = "rgb(29, 29, 29)";
                 document.getElementById('composer').style.backgroundColor = "rgb(29, 29, 29)";
                 document.getElementById('title').style.backgroundColor = "rgb(29, 29, 29)";
             }
-                i = true;
+                j = true;
                 document.getElementById(search_name).style.backgroundColor = "rgb(138, 73, 73)";
         }
         document.getElementById("title").click();
+    </script>
+    <script type="text/javascript">
+        function filter_scores() 
+        {
+            var input, filter, ul, li, a, i, txtValue;
+            input = document.getElementById("search_bar");
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("filter_list");
+            li = ul.getElementsByTagName("li");
+
+            for (i = 0; i < li.length; i++)
+            {
+                a = li[i].getElementsByTagName("a")[0];
+                txtValue = a.textContent || a.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1)
+                {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        window.addEventListener('keydown',
+            function(e)
+            {
+                if(e.keyIdentifier=='U+000A'|| e.keyIdentifier=='Enter'|| e.keyCode==13)
+                {
+                    if(e.target.nodeName == 'INPUT' && e.target.type == 'text')
+                    {
+                        e.preventDefault();
+                        return false;
+                    }
+                }
+            } ,true);
     </script>
 </body>
 </html>

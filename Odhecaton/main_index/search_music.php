@@ -2,22 +2,22 @@
 
 require_once('../connect.php');
 
-if (true)
-{
-    $sql = "SELECT score_title FROM scores ORDER BY year_written";
-    $sqlpath = "SELECT file_path FROM scores";
+$sql = "SELECT score_title, file_path, composer_name FROM scores 
+        ORDER BY year_written, composer_name;";
 
-    $responce = @mysqli_query($dbc, $sql);
-    $path_responce = @mysqli_query($dbc, $sql);
-    
-    if ($responce) 
+$responce = @mysqli_query($dbc, $sql);
+
+if ($responce) 
+{
+    echo '<ul id="filter_list" style="padding:0; margin-left:20px;">';
+    while($row = mysqli_fetch_array($responce)) 
     {
-        while($row = mysqli_fetch_array($responce)) 
-        {
-            echo '</br><a style="color:rgb(29, 29, 29); font-size:17px; 
-            font-family:Verdana; font-decoration:none;" 
-            href="../music_files/chopin_9_2" target="sheets">' . $row['score_title'] . '</a></br>';
-        }
+        $path = $row['file_path'];
+        echo '<li style="list-style-type:none; padding-bottom:15px;">
+        <a href="'.$path.'" style="color:rgb(29, 29, 29); font-size:15px; 
+        font-family:Verdana; text-decoration:none;" target="sheet_display">' . 
+        $row['score_title'] . '</br> by ' . $row['composer_name'] . '</a></li>';
     }
+    echo '</ul>';
 }
 ?>

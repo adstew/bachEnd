@@ -2,7 +2,7 @@
 
 require_once('../connect.php');
 
-$name = $_POST['c_name'];
+$name = $_POST['c_nameD'];
 $sql = "DELETE FROM composers WHERE composer_name = '$name';";
 $reponce = @mysqli_query($dbc, $sql);
 if ($responce)
